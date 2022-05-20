@@ -4,7 +4,7 @@ export interface RefObject {
   toggleVisibility: () => void
 }
 
-function Togglable( {children, buttonLabel } : { children: ReactNode, buttonLabel: string }, ref: Ref<RefObject> ) {
+function Togglable({ children, buttonLabel }: { children: ReactNode, buttonLabel: string }, ref: Ref<RefObject>) {
   //function Togglable(props: { children: ReactNode, buttonLabel: string }, ref: Ref<RefObject>) {
 
   const [visible, setVisible] = useState(false)
@@ -24,9 +24,9 @@ function Togglable( {children, buttonLabel } : { children: ReactNode, buttonLabe
   return (
     <div>
       <div style={hideWhenVisible}>
-        <button onClick={toggleVisibility}>{buttonLabel}</button>
+        <button id= "new-blog" onClick={toggleVisibility}>{buttonLabel}</button>
       </div>
-      <div style={showWhenVisible}>
+      <div style={showWhenVisible} className="togglableContent">
         {children}
         <button onClick={toggleVisibility}>cancel</button>
       </div>

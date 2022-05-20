@@ -15,14 +15,14 @@ function Blog({ blog, likeBlog, name, deleteBlog }: { blog: BlogDB, likeBlog: (l
 
   if (!viewDetails)
     return (
-      <div style={blogStyle}>
+      <div style={blogStyle} className='simpleBlog'>
         {blog.title} {blog.author}
         <button onClick={() => setviewDetails(!viewDetails)}>view</button>
       </div>
     );
 
   return (
-    <div style={blogStyle}>
+    <div style={blogStyle} className='advancedBlog'>
       {blog.title} {blog.author}
       <button onClick={() => setviewDetails(!viewDetails)}>hide</button><br />
       {blog.url}<br />

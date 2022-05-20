@@ -1,50 +1,46 @@
 import { useState } from 'react';
-import { iBlog } from '../interfaces/Blog';
 
-function NewBlog({ addNewBlog }: { addNewBlog: (newBlog: iBlog) => void }) {
-  const [newBlog, setNewBlog] = useState<iBlog>({
-    author: '',
-    title: '',
-    url: '',
-    //likes: 0,
-    //user: null,
-  });
+function NewBlog({ addNewBlog }: { addNewBlog: (title: string, author: string, url: string) => void }) {
 
-  const handleTitleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setNewBlog({ ...newBlog, title: event.target.value });
-  };
+  const [blogTitle, setBlogTitle] = useState('');
+  const [blogAuthor, setBlogAuthor] = useState('');
+  const [blogURL, setBlogURL] = useState('')
+
 
   const addBlog = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    addNewBlog(newBlog);
-    setNewBlog({ author: '', title: '', url: ''/*, likes: 0, user: null*/ });
-  };
+    addNewBlog(blogTitle, blogAuthor, blogURL);
+  }
 
   return (
     <form onSubmit={addBlog}>
       <div>
         title
-        <input type="text" value={newBlog.title} name="Title" onChange={handleTitleChange} />
+        <input type="text" id="title" placeholder='blog title' value={blogTitle} name="Title" onChange={(event) => setBlogTitle(event.target.value)} />
       </div>
       <div>
         author
         <input
           type="text"
-          value={newBlog.author}
+          placeholder='blog author'
+          value={blogAuthor}
           name="Author"
-          onChange={(event) => setNewBlog({ ...newBlog, author: event.target.value })}
+          id="author"
+          onChange={(event) => setBlogAuthor(event.target.value)}
         />
       </div>
       <div>
         url
         <input
           type="text"
-          value={newBlog.url}
+          placeholder='blog url'
+          value={blogURL}
           name="Url"
-          onChange={(event) => setNewBlog({ ...newBlog, url: event.target.value })}
+          id="url"
+          onChange={(event) => setBlogURL(event.target.value)}
         />
       </div>
-      <button type="submit">create</button>
+      <button id="create-button" type="submit">create</button>
     </form>
   );
 }

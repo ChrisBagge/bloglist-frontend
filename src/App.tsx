@@ -68,6 +68,7 @@ function App() {
       blogService.setToken(user.token);
       setUser(user); setUsername(''); setPassword('');
     } catch (exception) {
+      setUsername(''); setPassword('');
       const errorNote: NoteType = { notificationType: NotificationType.error, message: `wrong username or password` };
       setErrorMessage(errorNote);
       console.log(exception)
@@ -76,13 +77,15 @@ function App() {
       }, 5000)
     }
   };
-  const handleNewBlog = async (blog: iBlog) => {
+  const handleNewBlog = async (title: string, author: string, url: string ) => {
     try {
       if (blogFormRef.current)
         blogFormRef.current.toggleVisibility()
-      
+
+      const blog: iBlog = { title, author, url }
+
       const savedBlog = await blogService.create(blog);
-      
+
       setBlogs(blogs.concat(savedBlog))
       const infoNote: NoteType = { notificationType: NotificationType.info, message: `a new blog ${blog.title} by ${blog.author} added` };
       setErrorMessage(infoNote);
@@ -99,15 +102,15 @@ function App() {
     console.log(user)
     try {
       const likedBlogUserId = {
-        "id" : likedBlog.id,
+        "id": likedBlog.id,
         "title": likedBlog.title,
         "author": likedBlog.author,
         "url": likedBlog.url,
         "likes": likedBlog.likes,
         "user": likedBlog.user.id
       }
-      const updatedBlog = await blogService.update(likedBlogUserId.id, likedBlogUserId)   
-      
+      const updatedBlog = await blogService.update(likedBlogUserId.id, likedBlogUserId)
+
       setBlogs(blogs.map(blog => blog.id !== updatedBlog.id ? blog : updatedBlog))
 
     }
@@ -115,7 +118,7 @@ function App() {
     catch (exception) {
       console.log(exception)
     }
-    
+
 
 
   }
@@ -147,7 +150,7 @@ function App() {
       <h2>blogs</h2>
       <Notification noteType={errorMessage} />
       <p>
-        {user.name} logged-in 
+        {user.name} logged-in
         <button
           onClick={() => {
             window.localStorage.removeItem('loggedBlogappUser');
@@ -162,11 +165,11 @@ function App() {
           addNewBlog={handleNewBlog}
         />
       </Togglable>
-      {blogs.sort((a,b) => b.likes - a.likes)
-      .map((blog) => (
-        <Blog key={blog.id} blog={blog}  likeBlog={handleLike} name={user.name} deleteBlog={deleteBlog}/>
-      ))}
-      
+      {blogs.sort((a, b) => b.likes - a.likes)
+        .map((blog) => (
+          <Blog key={blog.id} blog={blog} likeBlog={handleLike} name={user.name} deleteBlog={deleteBlog} />
+        ))}
+
     </div>
   );
 }
