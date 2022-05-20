@@ -77,7 +77,7 @@ function App() {
       }, 5000)
     }
   };
-  const handleNewBlog = async (title: string, author: string, url: string ) => {
+  const handleNewBlog = async (title: string, author: string, url: string) => {
     try {
       if (blogFormRef.current)
         blogFormRef.current.toggleVisibility()
