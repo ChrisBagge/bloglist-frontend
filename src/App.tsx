@@ -1,5 +1,5 @@
 import { useEffect, useState, useRef } from 'react';
-import Blog from '../src/features/blog/Blog'
+
 import LoginForm from './components/LoginForm';
 import NewBlog from './components/NewBlog';
 import Notification from './components/Notification';
@@ -12,6 +12,8 @@ import loginService from './services/login';
 import { RefObject } from './components/Togglable'
 
 import { BlogDB } from './interfaces/Blog'
+import BlogList from './features/blog/BlogList';
+
 
 
 type user = {
@@ -165,11 +167,7 @@ function App() {
           addNewBlog={handleNewBlog}
         />
       </Togglable>
-      {blogs.sort((a, b) => b.likes - a.likes)
-        .map((blog) => (
-          <Blog key={blog.id} blog={blog} name={user.name} />
-        ))}
-
+      <BlogList user={user} />
     </div>
   );
 }
