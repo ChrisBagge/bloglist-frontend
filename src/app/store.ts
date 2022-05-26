@@ -1,10 +1,18 @@
 import { configureStore, ThunkAction, Action } from '@reduxjs/toolkit';
-import blogReducer from '../features/blog/blogSlice'
+import notificationReducer from '../features/notification/notificationSlice'
+import userReducer from '../features/user/userSlice'
+
+import { apiSlice } from '../features/api/apiSlice'
 
 export const store = configureStore({
   reducer: {
-    blogs: blogReducer,
+    notifications: notificationReducer,
+    users: userReducer,
+    [apiSlice.reducerPath]: apiSlice.reducer
   },
+  middleware: getDefaultMiddleware =>
+    getDefaultMiddleware().concat(apiSlice.middleware)
+
 });
 
 export type AppDispatch = typeof store.dispatch;

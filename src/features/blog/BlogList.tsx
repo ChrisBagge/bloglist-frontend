@@ -1,12 +1,8 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 
-import { useAppDispatch } from '../../app/hooks';
-import { useSelector } from 'react-redux';
-
-import { RootState } from '../../app/store'
-
-import { fetchBlogs, selectAllBlogs } from './blogSlice'
 import Blog from './Blog';
+
+import { useGetBlogsQuery } from '../api/apiSlice'
 
 function BlogList({ user }: {
   user: {
@@ -17,24 +13,22 @@ function BlogList({ user }: {
   };
 }) {
 
-  const dispatch = useAppDispatch();
-  const blogs = useSelector(selectAllBlogs)
-  
-  const blogStatus = useSelector((state: RootState) => state.blogs.status);
+  const {
+    data: blogs,
+    isLoading,
+    isSuccess,
+    isError,
+    error
+  } = useGetBlogsQuery()
 
-  useEffect(() => {
-    if (blogStatus === 'idle') {
-      dispatch(fetchBlogs())
-    }
-  }, [blogStatus, dispatch])
-
-  if (blogStatus === 'succeeded') {
+  if (isSuccess) { //blogStatus === 'succeeded') {
 
     return (
       <>
         {[...blogs].sort((a, b) => b.likes - a.likes)
           .map((blog) => (
-            <Blog key={blog.id} blog={blog} name={user.name} />
+            //<Blog key={blog.id} blog={blog} name={user.name} />
+            <Blog key={blog.id} id={blog.id} name={user.name} />
           ))}
       </>
     );

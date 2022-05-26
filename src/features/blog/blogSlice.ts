@@ -18,19 +18,6 @@ const initialState: blogState = {
   error: undefined
 }
 
-export const deleteBlog = createAsyncThunk<any, string, { state: RootState }>(
-  'blogs/deleteBlog',
-  async (id: string, { getState }) => {
-    const state: RootState = getState();
-    if (window.confirm(`Delete ${state.blogs.blogs.find(blog => blog.id === id)?.title} ?`)) {
-      await blogService.deleteBlog(id)
-      //setBlogs(blogs.filter(n => n.id !== id))
-      return id;
-    }
-    
-  }
-)
-
 export const likeBlog = createAsyncThunk<any, BlogDB>(
   'blogs/likeBlog',
   async (blog: BlogDB) => {
@@ -57,16 +44,13 @@ export const likeBlog = createAsyncThunk<any, BlogDB>(
     }
   }
 )
-
 export const fetchBlogs = createAsyncThunk(
   'blogs/fetchBlogs',
   async () => {
     const blogs = await blogService.getAll();
     return blogs;
   }
-
 )
-
 
 export const blogSlice = createSlice({
   name: 'blogs',
@@ -80,10 +64,7 @@ export const blogSlice = createSlice({
       
       .addCase(likeBlog.fulfilled, (state, action: PayloadAction<BlogDB>) => {
         state.blogs = state.blogs.map(blog => blog.id !== action.payload.id ? blog : action.payload)
-      })
-      .addCase(deleteBlog.fulfilled, (state, action: PayloadAction<string>) => {
-        state.blogs = state.blogs.filter(n => n.id !== action.payload)
-      })
+      })      
       .addCase(fetchBlogs.fulfilled, (state, action: PayloadAction<BlogDB[]>) => {
         state.status = 'succeeded';
         state.blogs = action.payload;       
@@ -96,6 +77,6 @@ export const blogSlice = createSlice({
 })
 
 
-export const selectAllBlogs = (state: RootState) => state.blogs.blogs
+//export const selectAllBlogs = (state: RootState) => state.blogs
 
 export default blogSlice.reducer;
