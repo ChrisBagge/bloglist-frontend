@@ -2,17 +2,10 @@ import React from 'react'
 
 import Blog from './Blog';
 
-import { useGetBlogsQuery } from '../api/apiSlice'
+import { useGetBlogsQuery } from '../features/api/apiSlice'
 
-function BlogList({ user }: {
-  user: {
-    token: string;
-    username: string;
-    name: string;
-    id: string;
-  };
-}) {
-
+function BlogList() {
+   
   const {
     data: blogs,
     isLoading,
@@ -28,7 +21,7 @@ function BlogList({ user }: {
         {[...blogs].sort((a, b) => b.likes - a.likes)
           .map((blog) => (
             //<Blog key={blog.id} blog={blog} name={user.name} />
-            <Blog key={blog.id} id={blog.id} name={user.name} />
+            <Blog key={blog.id} id={blog.id} />
           ))}
       </>
     );

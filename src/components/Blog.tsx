@@ -1,8 +1,12 @@
 import { useState } from 'react';
-import { BlogDB } from '../interfaces/Blog';
 import React from 'react'
 
-function Blog({ blog, likeBlog, name, deleteBlog }: { blog: BlogDB, likeBlog: (likedBlog: BlogDB) => void, name: string, deleteBlog: (id: string) => void }) {
+import { useUpdateBlogMutation, useDeleteBlogMutation } from '../features/api/apiSlice'
+import { useGetBlogsQuery } from '../features/api/apiSlice'
+import { useAppSelector } from '../app/hooks';
+
+//function Blog({ blog, name }: { blog: BlogDB, name: string }) {
+function Blog({ id }: { id: string }) {
   const blogStyle = {
     paddingTop: 10,
     paddingLeft: 2,
@@ -11,7 +15,25 @@ function Blog({ blog, likeBlog, name, deleteBlog }: { blog: BlogDB, likeBlog: (l
     marginBottom: 5
   }
 
+  const [updateBlog, { isLoading: isUpdating },] = useUpdateBlogMutation()
+  const [deleteBlog, { isLoading: isDeleting },] = useDeleteBlogMutation()
+
   const [viewDetails, setviewDetails] = useState(false);
+
+  const user = useAppSelector((state) => state.users.user);
+
+  const { blog } = useGetBlogsQuery(undefined, {
+    selectFromResult: ({ data }) => ({
+      blog: data?.find((blog) => blog.id === id)
+    })
+  })
+
+  if (!blog)
+    return (
+      <div>
+        No blog data found
+      </div>
+    )
 
   if (!viewDetails)
     return (
@@ -27,9 +49,10 @@ function Blog({ blog, likeBlog, name, deleteBlog }: { blog: BlogDB, likeBlog: (l
       <button onClick={() => setviewDetails(!viewDetails)}>hide</button><br />
       {blog.url}<br />
       likes {blog.likes}
-      <button onClick={() => likeBlog(blog)}>like</button><br />
+      {/* <button onClick={() => dispatch(likeBlog(blog))}>like</button><br /> */}
+      <button onClick={() => updateBlog({ id: blog.id, likes: blog.likes + 1 })}>like</button><br />
       {blog.user.name}
-      {name === blog.user.name &&
+      {user?.name === blog.user.name &&
         <>
           <button onClick={() => deleteBlog(blog.id)}>remove</button><br />
         </>

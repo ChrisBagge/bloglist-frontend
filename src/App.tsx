@@ -9,9 +9,9 @@ import { iBlog } from './interfaces/Blog';
 
 import { RefObject } from './components/Togglable'
 
-import BlogList from './features/blog/BlogList';
+import BlogList from './components/BlogList'
 
-import {  useAddBlogMutation } from '../src/features/api/apiSlice'
+import { useAddBlogMutation } from '../src/features/api/apiSlice'
 
 import { setMessage } from '../src/features/notification/notificationSlice'
 import { clearUser } from '../src/features/user/userSlice'
@@ -32,16 +32,10 @@ type NoteType = {
 
 function App() {
 
-  const userRedux = useAppSelector((state) => state.users.user);
-
+  const user = useAppSelector((state) => state.users.user);
   const dispatch = useAppDispatch()
-  
   const [addBlog, { isLoading }] = useAddBlogMutation()
-  
-
   const blogFormRef = useRef<RefObject>(null);
- 
-
   const handleAddBlog = async (title: string, author: string, url: string) => {
     try {
       if (blogFormRef.current)
@@ -55,14 +49,13 @@ function App() {
       //setErrorMessage(infoNote);
       setTimeout(() => {
         dispatch(setMessage({ notificationType: NotificationType.info, message: '' }));
-        //setErrorMessage({ notificationType: NotificationType.info, message: '' })
       }, 5000)
     } catch (exception) {
       console.log('exception');
     }
   };
 
-  if (userRedux === null) {
+  if (user === null) {
     return (
       <div>
         <h2>Log in to application</h2>
@@ -76,13 +69,8 @@ function App() {
       <h2>blogs</h2>
       <Notification />
       <p>
-        {userRedux.name} logged-in
-        <button
-          onClick={() => {
-            dispatch(clearUser())
-
-          }}
-        >
+        {user.name} logged-in
+        <button onClick={() => { dispatch(clearUser()) }} >
           logout
         </button>
       </p>
@@ -91,7 +79,7 @@ function App() {
           addNewBlog={handleAddBlog}
         />
       </Togglable>
-      <BlogList user={userRedux} />
+      <BlogList />
     </div>
   );
 }

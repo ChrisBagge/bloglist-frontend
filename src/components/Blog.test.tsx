@@ -12,7 +12,7 @@ describe('<Blog />', () => {
     const deleteBlog = jest.fn()
     const likeBlog = jest.fn()
     
-    const { container } = render(<Blog blog={blog} deleteBlog={deleteBlog} likeBlog={likeBlog} name="ChristBagge" />)
+    const { container } = render(<Blog id ={blog.id} />)
     const div = container.querySelector('.simpleBlog')
     expect(div).toHaveTextContent('test title Christopher Bagge')
     expect(div).toBeDefined()
@@ -22,7 +22,7 @@ describe('<Blog />', () => {
     const deleteBlog = jest.fn()
     const likeBlog = jest.fn()
     
-    const { container } = render(<Blog blog={blog} deleteBlog={deleteBlog} likeBlog={likeBlog} name="ChristBagge" />)
+    const { container } = render(<Blog id={blog.id} />)
 
     const user = userEvent.setup()
     const button = screen.getByText('view')
@@ -40,7 +40,7 @@ describe('<Blog />', () => {
     const deleteBlog = jest.fn()
     const likeBlog = jest.fn()
     
-    render(<Blog blog={blog} deleteBlog={deleteBlog} likeBlog={likeBlog} name="ChristBagge" />)
+    render(<Blog id={blog.id} />)
 
     const user = userEvent.setup()
     
