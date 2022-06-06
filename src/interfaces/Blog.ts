@@ -28,3 +28,18 @@ export interface iBlog {
   //likes?: number,
   //user: iUser | null
 }
+
+interface Blog {
+  title: string,
+  url: string,
+  likes: number,
+  id: string
+}
+
+export interface UserWithBlogs {
+  userName: string,
+  name: string,
+  blogs: Blog[],
+  id: string
+
+}

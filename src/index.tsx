@@ -5,6 +5,11 @@ import { store } from './app/store';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import './index.css';
+import { BrowserRouter, Routes, Route } from 'react-router-dom'
+import Users from './components/Users';
+import User from './components/User';
+import NewBlogBlogList from './components/NewBlogBloglist';
+import { UserWithBlogs } from './interfaces/Blog'
 
 
 // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
@@ -14,9 +19,19 @@ const root = createRoot(container);
 
 root.render(
   <React.StrictMode>
+
     <Provider store={store}>
-      <App />
+      <BrowserRouter>
+        <Routes>
+          <Route path="/" element={<App />} >
+            <Route index element={<NewBlogBlogList />} />
+            <Route path="/users" element={<Users />} />
+            <Route path="/users/:id" element={<User />} />
+          </Route>
+        </Routes>
+      </BrowserRouter>
     </Provider>
+
   </React.StrictMode>
 );
 

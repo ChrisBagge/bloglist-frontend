@@ -12,7 +12,8 @@ function initUser(): User | null {
   let user = null;
   const loggedUserJSON = window.localStorage.getItem('loggedBlogappUser');
   if (loggedUserJSON) {
-    user = JSON.parse(loggedUserJSON);    
+    user = JSON.parse(loggedUserJSON);
+    setToken(user.token)
   }
   return user;
 }

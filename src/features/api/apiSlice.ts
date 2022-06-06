@@ -1,5 +1,5 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
-import { BlogDB, iBlog } from '../../interfaces/Blog'
+import { BlogDB, iBlog, UserWithBlogs } from '../../interfaces/Blog'
 
 let token = ''
 
@@ -40,8 +40,6 @@ export const apiSlice = createApi({
       }),
       invalidatesTags: ['Blogs']
     }),
-
-
     updateBlog: builder.mutation<BlogDB, Partial<BlogUpdate>>({
       query(data) {
         const { id, ...body } = data
@@ -51,9 +49,7 @@ export const apiSlice = createApi({
           body
         }
       },
-
       invalidatesTags: ['Blogs']
-
     }),
     deleteBlog: builder.mutation<{ success: boolean; id: string }, string>({
       query(id) {
@@ -65,14 +61,20 @@ export const apiSlice = createApi({
       },
       invalidatesTags: ['Blogs']
     }),
-    userLogin: builder.mutation<{token:string, username: string, name: string, id: string} | null, User>({
+    // login controller
+    userLogin: builder.mutation<{ token: string, username: string, name: string, id: string } | null, User>({
       query: user => ({
         url: 'login',
         method: 'POST',
         body: user,
       })
     }),
+    // user controller
+    getUsers: builder.query<Array<UserWithBlogs>, void>({
+      query: () => 'users',
+    }),
+
   })
 })
 
-export const { useGetBlogsQuery, useAddBlogMutation, useUpdateBlogMutation, useDeleteBlogMutation, useUserLoginMutation } = apiSlice
+export const { useGetBlogsQuery, useAddBlogMutation, useUpdateBlogMutation, useDeleteBlogMutation, useUserLoginMutation, useGetUsersQuery } = apiSlice
